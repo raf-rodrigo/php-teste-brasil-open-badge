@@ -1,0 +1,22 @@
+version: "3.8"
+name: brasil-open-badge
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: DockerFile
+    container_name: brasil-open-badge
+    restart: always
+    working_dir: /var/www
+    volumes:
+      - ../src:/var/www
+
+  nginx:
+    image: nginx:1.25.1-alpine-slim
+    container_name: brasil-open-badge-nginx
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ../src:/var/www
+      - ./nginx:/etc/nginx/conf.d
