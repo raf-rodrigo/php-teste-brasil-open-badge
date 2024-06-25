@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Arquivo responsável por realizar a exclusão do registro na tabela users e as cores referentes ao usuário
+ * na tabela user_colors
+ */
+
 require __DIR__ .'/controller/CrudController.php';
 
 /**
@@ -13,10 +18,19 @@ if (isset($_GET['id'])) {
      */
     $crud = new CrudController();
 
+    /**
+     * Primeiro eu deleto o usuário
+     */
     $deleteUser = $crud->deleteUser($id);
 
+    /**
+     * se a exclusão do usuário for completa, é feito a exclusão de todas a s cores referente a registro excluido
+     */
     $deleteUserIdColors = $crud->deleteUserColorsAll($id);
 
+    /**
+     * Redireciona para a página index.php
+     */
     header('Location: index.php');
     exit();
 

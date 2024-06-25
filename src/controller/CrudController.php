@@ -109,23 +109,6 @@ class CrudController
         return $userOnly;
     }
 
-//    /**
-//     * Método responsávelpor recuperar o name da cor do registro recebendo como parâmetro o id
-//     * @param integer $id
-//     * @return mixed
-//     */
-//    public function readColorUser($id)
-//    {
-//        $connection = new Connection();
-//
-//        $query = "SELECT name FROM colors WHERE id='{$id}'";
-//
-//        $colorUser = $connection->query($query)->fetch(PDO::FETCH_ASSOC);
-//
-//        return $colorUser;
-//
-//    }
-
     /**
      * Método responsável por inserir dados no banco
      * @param array $values [ field => value ]
@@ -151,7 +134,7 @@ class CrudController
          * Montando a query da inserção do usuário
          */
         $query = "INSERT INTO users (name,email) VALUES ('{$fieldsName}','{$fieldsEmail}')";
-//        die($query);
+
 
         $insert = $connection->query($query);
 
@@ -218,6 +201,12 @@ class CrudController
         return $updateUser;
     }
 
+    /**
+     * Metódo responsável por fazer o update do registro na parte da cores
+     * @param integer $id
+     * @param integer $color
+     * @return false|PDOStatement
+     */
     public function insertColorUpdate($id, $color)
     {
 
@@ -248,6 +237,11 @@ class CrudController
         return $deleteUser;
     }
 
+    /**
+     * Método responsável por deletar todas as cores referente ao registro de id=x
+     * @param integer $id
+     * @return false|PDOStatement
+     */
     public function deleteUserColorsAll($id)
     {
 
@@ -260,6 +254,12 @@ class CrudController
         return $deleteUserColors;
     }
 
+    /**
+     * Método responsável por excluir somente uma cor da tabela user_colors
+     * @param integer $userId
+     * @param integer $colorId
+     * @return false|PDOStatement
+     */
     public function deleteUserColors($userId, $colorId)
     {
 

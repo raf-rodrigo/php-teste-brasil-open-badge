@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Classe referente a tabela users onde seus atributos(colunas) estão tipados
+ */
 class User
 {
     /**

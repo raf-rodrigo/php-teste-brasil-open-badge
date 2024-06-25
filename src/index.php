@@ -1,11 +1,19 @@
 <?php
+/**
+ * Arquivo incial do projeto
+ * As partes foram dividas e inseridas denro do arquivo includes, para manter um código limpo
+ */
 
 require __DIR__ . '/controller/CrudController.php';
 
+/**
+ * Os três código abaixo faz a instancia da classe CrudController
+ * Buscas os registro
+ * Buscas os id e nome das cores na tabela colors
+ */
 $crud = new CrudController();
 
 $users = $crud->readUser();
-//echo '<pre>'; print_r($users);echo '</pre>';die();
 
 $colors = $crud->checkColor();
 

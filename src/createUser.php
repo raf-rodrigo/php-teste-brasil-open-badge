@@ -1,8 +1,13 @@
 <?php
-
+/**
+ * Arquivo responsável por fazer a inclusão do registro no banco de dados
+ */
 require __DIR__ . '/Model/User.php';
 require __DIR__ . '/controller/CrudController.php';
 
+/**
+ * Validação
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $name = $_POST['name'];
@@ -35,6 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'email' => $createuser->email,
         ]);
 
+        /**
+         * Retorno do ai da função chamada acima insertUser
+         */
         $id = $insertUser;
 
 
@@ -50,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         /**
-         * Redirecionado para a página  dependendo do valor do last-page
+         * Redirecionado para a página principal
          */
         header('Location: index.php');
         exit();

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Arquivo que vai mostrar a página de visualização e update do usuário
+ */
 require __DIR__ . '/Model/User.php';
 require __DIR__ . '/controller/CrudController.php';
 
