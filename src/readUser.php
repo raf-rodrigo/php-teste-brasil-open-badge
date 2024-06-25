@@ -43,7 +43,9 @@ include ("includes/header.php");
                         <label for="email" class="text-start">Email</label>
                         <input type="text" id="email" name="email" class="form-control" value="<? print_r($readUserOnly[0]['user_email']); ?>">
                     </div>
-                    <p class="text-danger">Observação: Para alterar o valor da cor é necessário deletar a cor e adicionar uma nova cor.</p>
+                    <!-- Verificar o regamento da página -->
+                    <p class="text-danger text-0_7">Observação: Para alterar o valor da cor é necessário deletar a cor e adicionar uma nova cor. <br>
+                        Porém recomenda-se que a cor seja altera antes do escrito, devido a recarregamento da página ao deletar a cor.</p>
                     <div class="row g-2 align-items-center">
                         <?php if (!empty($readUserOnly) && count($readUserOnly) > 0) { ?>
                             <?php foreach ($readUserOnly as $user) { ?>

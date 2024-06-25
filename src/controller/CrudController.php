@@ -30,23 +30,6 @@ class CrudController
         return $readUser;
     }
 
-    /**
-     * Função que realiza a contagem de registro no banco de dados
-     * @return mixed
-     */
-    public function countUsers()
-    {
-        $connection = new Connection();
-
-        /**
-         * Montando a query de consulta de números de registros
-         */
-        $queryCountUsers = $connection->query("SELECT COUNT(*) count FROM users");
-
-        $countUsers = $queryCountUsers->fetch(PDO::FETCH_ASSOC)["count"];
-
-        return $countUsers;
-    }
 
     /**
      * Método esponável por verificar na tabela user_colors se já existeregistro
@@ -65,6 +48,7 @@ class CrudController
 
         return $responseRecord;
     }
+
 
     /**
      * Consulta na tabeça colors para ser inserido no select

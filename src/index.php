@@ -17,6 +17,35 @@ $users = $crud->readUser();
 
 $colors = $crud->checkColor();
 
+/**
+ * Paginação
+ */
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$limit = 5;
+
+$start = ($page - 1) * $limit;
+
+$conn = new Connection();
+
+$data = $conn->getPaginatedResults($limit, $start);
+// Exibir o resultado para debug
+//foreach ($data as $row) {
+//    echo 'ID: ' . $row->user_id . ' - Nome: ' . $row->user_name . ' - Email: ' . $row->user_email . ' - Cor: ' . $row->color_name . '<br>';
+//}
+
+$numberRecords = $conn->getTotalCount();
+
+$totalPages = ceil($numberRecords / $limit);
+
+
+/**
+ * Final Paginação
+ */
+
+/**
+ * Buscando as cores da tabalea colors
+ */
+$colors = $crud->checkColor();
 
 /**
  * Inclusão da sessão header
