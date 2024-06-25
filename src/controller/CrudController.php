@@ -7,11 +7,11 @@ class CrudController
     /**
      * Realiza conculta do usuário fazendo união com a tabela colors,
      * para ao invés de trazer o a coluna id traga a coluna name
-     * @param $limit
-     * @param $start
+     * @param integer $limit
+     * @param integer $start
      * @return array|false
      */
-    public function readUser($limit, $start)
+    public function readUser()
     {
         /**
          * Instânciando a classe Connection
@@ -19,14 +19,15 @@ class CrudController
         $connection = new Connection();
 
         /**
-         * Montando a query de read do user fazendo junção com a tabela colors e passando parâmetros para realizar a
-         * paginação
+         * Não foi permitido o envio diretoda query do select logo criei outro método no Connection com a query fixa
          */
-        $queryUsers = $connection->query("SELECT users.id, users.name, users.email, colors.name AS color_name, colors.id AS color_id FROM users LEFT JOIN colors ON users.color = colors.id LIMIT $start, $limit");
+        $query = "SELECT users.id AS user_id, users.name AS user_name, users.email AS user_email, user_colors.color_id AS color_id, user_colors.user_id AS user_id_color, colors.name AS color_name FROM users LEFT JOIN user_colors ON users.id = user_colors.user_id LEFT JOIN colors on user_colors.color_id = colors.id";
 
-        $users = $queryUsers->fetchAll(PDO::FETCH_ASSOC);
+        $readUser = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
-        return $users;
+//        echo '<pre>'; print_r($readUser);echo '</pre>';die();
+
+        return $readUser;
     }
 
     /**
@@ -45,6 +46,24 @@ class CrudController
         $countUsers = $queryCountUsers->fetch(PDO::FETCH_ASSOC)["count"];
 
         return $countUsers;
+    }
+
+    /**
+     * Método esponável por verificar na tabela user_colors se já existeregistro
+     * @param $id
+     * @param $colors
+     * @return mixed
+     */
+    public function consultRecord($id, $colors)
+    {
+
+        $connection = new Connection();
+
+        $requestRecord = $connection->query("SELECT COUNT(*) count FROM user_colors WHERE user_id={$id} AND color_id={$colors}");
+
+        $responseRecord = $requestRecord->fetch(PDO::FETCH_ASSOC)['count'];
+
+        return $responseRecord;
     }
 
     /**
@@ -67,36 +86,45 @@ class CrudController
 
     /**
      * Método que realiza a busca de somente de um usuário do id recebido
-     * @param $id integer
+     * @param integer $id
      * @return false|PDOStatement
      */
     public function readUserOnly($id)
     {
         $connection = new Connection();
 
-        $query = "SELECT * FROM users where id = {$id}";
+//        $query = "SELECT users.id AS user_id,
+//                    users.name AS user_name,
+//                    users.email AS user_email,
+//                    user_colors.color_id AS color_id,
+//                    user_colors.user_id AS user_id_color,
+//                    colors.name AS color_name
+//                    FROM users
+//                    LEFT JOIN user_colors ON users.id = user_colors.user_id
+//                    LEFT JOIN colors ON user_colors.color_id = colors.id
+//                    WHERE users.id = {$id}";
 
-        $userOnly = $connection->query($query);
+        $userOnly = $connection->queryReadUserOnly($id);
 
         return $userOnly;
     }
 
-    /**
-     * Método responsávelpor recuperar o name da cor do registro recebendo como parâmetro o id
-     * @param $id
-     * @return mixed
-     */
-    public function readColorUser($id)
-    {
-        $connection = new Connection();
-
-        $query = "SELECT name FROM colors WHERE id={$id}";
-
-        $colorUser = $connection->query($query)->fetch(PDO::FETCH_ASSOC);
-
-        return $colorUser;
-
-    }
+//    /**
+//     * Método responsávelpor recuperar o name da cor do registro recebendo como parâmetro o id
+//     * @param integer $id
+//     * @return mixed
+//     */
+//    public function readColorUser($id)
+//    {
+//        $connection = new Connection();
+//
+//        $query = "SELECT name FROM colors WHERE id='{$id}'";
+//
+//        $colorUser = $connection->query($query)->fetch(PDO::FETCH_ASSOC);
+//
+//        return $colorUser;
+//
+//    }
 
     /**
      * Método responsável por inserir dados no banco
@@ -118,18 +146,56 @@ class CrudController
          */
         $fieldsName = $fields[0];
         $fieldsEmail = $fields[1];
-        $fieldsColor = $fields[2];
 
         /**
          * Montando a query da inserção do usuário
          */
-        $query = "INSERT INTO users (name,email,color) VALUES ('{$fieldsName}','{$fieldsEmail}','{$fieldsColor}')";
+        $query = "INSERT INTO users (name,email) VALUES ('{$fieldsName}','{$fieldsEmail}')";
+//        die($query);
 
         $insert = $connection->query($query);
 
-        return $insert;
+        if ($insert) {
+            return $lastInsertId = $connection->lastInsertId();
+        }
     }
 
+    /**
+     * Método responsável por salvar os valores das cores de cadastro de registro na tabela user_colors
+     * @param $id integer
+     * @param $values array
+     * @return false|PDOStatement
+     */
+    public function insertColor($id, $values)
+    {
+        $connection = new Connection();
+//        echo '<pre>'; print_r($values); echo '</pre>';die();
+        /**
+         * Verificando o comprimento da array valores
+         */
+        $tamanhoDeValues = count($values);
+
+        for($i = 0; $i < $tamanhoDeValues; $i++){
+            /**
+             * query para cada interação for
+             */
+            $query = "INSERT INTO user_colors (user_id, color_id) VALUES ('{$id}','{$values[$i]}')";
+
+            if (!empty($values[$i])){
+                $insertColors = $connection->query($query);
+            }
+
+        }
+
+        return $insertColors;
+
+    }
+
+    /**
+     * Método responsável por realizar o update do registro
+     * @param array $values
+     * @return false|PDOStatement
+     */
     public function updateUser($values)
     {
         $connection = new Connection();
@@ -138,24 +204,33 @@ class CrudController
          * Convertendo as keys string em interger
          */
         $fields = array_values($values);
-
+//        echo '<pre>'; print_r($fields); echo '</pre>';die('metodo update');
         /**
          * Separandoo os valores da array enviada
          */
         $id = $fields[0];
         $name = $fields[1];
         $email = $fields[2];
-        $color = $fields[3];
 
-        /**
-         * Montando a query
-         */
-        $query = "UPDATE users SET name='{$name}', email='{$email}', color='{$color}' WHERE id={$id}";
+        $updateUser = $connection->updateUser($id, $name, $email);
 
-        $updateUser = $connection->query($query);
 
         return $updateUser;
     }
+
+    public function insertColorUpdate($id, $color)
+    {
+
+        $connection = new Connection();
+
+        $query = "INSERT INTO user_colors (user_id, color_id) VALUES ({$id},{$color})";
+
+
+        $insertColor = $connection->query($query);
+
+        return $insertColor;
+    }
+
 
     /**
      * Método responsávelpor fazer a exclusão do registro do usuário na tabela users
@@ -168,8 +243,32 @@ class CrudController
 
         $query = "DELETE FROM users WHERE id={$id}";
 
-        $deleteuser = $connection->query($query);
+        $deleteUser = $connection->query($query);
 
-        return $deleteuser;
+        return $deleteUser;
+    }
+
+    public function deleteUserColorsAll($id)
+    {
+
+        $connection = new Connection();
+
+        $query = "DELETE FROM user_colors WHERE user_id={$id}";
+
+        $deleteUserColors = $connection->query($query);
+
+        return $deleteUserColors;
+    }
+
+    public function deleteUserColors($userId, $colorId)
+    {
+
+        $connection = new Connection();
+
+        $query = "DELETE FROM user_colors WHERE user_id={$userId} AND color_id={$colorId}";
+
+        $deleteUserColors = $connection->query($query);
+
+        return $deleteUserColors;
     }
 }

@@ -19,9 +19,4 @@ class User
      */
     public $email;
 
-    /**
-     * Variável da coluna cor do usuário
-     * @var integer
-     */
-    public $color;
 }

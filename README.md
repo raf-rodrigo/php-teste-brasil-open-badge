@@ -36,3 +36,7 @@ Este projeto conta com uma base sqlite com alguns registros já inseridos. Para 
 
 ##### Boa Sorte
 Use seu conhecimento, consulte a documentação e o google, caso ainda houver dúvidas, nos pergunte :D. Boa sorte!
+
+### Observação:
+
+Caso utilize o arquivo docker-compose.yml. Vá até a pasta docker e rode com docker-compose up -d, pronto seu ambiente esta no localhost:8000
