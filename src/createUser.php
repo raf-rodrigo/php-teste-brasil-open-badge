@@ -51,7 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          * na tabela user_colors, não não tiver não faz nada
          */
         if (empty($colors) || empty(array_filter($colors))) {
-            return;
+            header('Location: index.php');
+            exit();
         }else {
             $insertColor = $crud->insertColor($id, $colors);
         }

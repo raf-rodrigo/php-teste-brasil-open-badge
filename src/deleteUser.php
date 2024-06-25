@@ -10,8 +10,8 @@ require __DIR__ .'/controller/CrudController.php';
 /**
  * Verificação dos parâmetros envias via GET
  */
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
 
     /**
      * Instância da classe CrudController

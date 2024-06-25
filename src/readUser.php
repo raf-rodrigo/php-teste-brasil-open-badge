@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Arquivo que vai mostrar a página de visualização e update do usuário
  */

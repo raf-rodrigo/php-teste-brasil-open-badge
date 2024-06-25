@@ -93,7 +93,7 @@ $crud = new CrudController();
                                             </td>
                                             <td class="align-middle text-center">
                                                 <a href="readUser.php?id=<? echo $user['user_id']; ?>"><span title="Editar Registro"><img src="../public/assets/icon/edit.svg" width="30" /></span></a>
-                                                <a href="deleteUser.php?id=<? echo $user['user_id']; ?>" onclick="confirmDeletion(<? $user['user_id']; ?>)"><span title="Excluir Registro"><img src="../public/assets/icon/trash.svg" width="30" /></span></a>
+                                                <button class="btn btn-link" onclick="openConfirmationModal(<? echo $user['user_id']; ?>)"><span title="Excluir Registro"><img src="../public/assets/icon/trash.svg" width="30" /></span></button>
                                             </td>
                                         </tr>
                                     <? endforeach; ?>
@@ -118,6 +118,37 @@ $crud = new CrudController();
     </div>
 </section>
 
+<div id="confirmationModal" class="modal">
+    <div class="modal-dialog border border-opacity-100 border-danger rounded-4">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir Registro</h5>
+            </div>
+            <div class="modal-body">
+                <p>Você tem certeza que deseja excluir este registro?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="POST" action="../deleteUser.php">
+                    <input type="hidden" id="recordId" name="id">
+                    <button class="btn btn-outline-primary" type="button" onclick="closeConfirmationModal()">Cancelar</button>
+                    <button class="btn btn-outline-danger" type="button" onclick="submitForm()">Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    function openConfirmationModal(id) {
+        document.getElementById('recordId').value = id;
+        document.getElementById('confirmationModal').style.display = 'block';
+    }
 
+    function closeConfirmationModal() {
+        document.getElementById('confirmationModal').style.display = 'none';
+    }
 
+    function submitForm() {
+        document.getElementById('deleteForm').submit();
+    }
+</script>
