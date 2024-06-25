@@ -39,4 +39,5 @@ Use seu conhecimento, consulte a documentação e o google, caso ainda houver d�
 
 ### Observação feita por Rafael Rodrigo Doimo:
 
-Caso utilize o arquivo docker-compose.yml. Vá até a pasta docker e rode com docker-compose up -d, pronto seu ambiente esta no localhost:8000
+- Caso utilize o arquivo docker-compose.yml. Vá até a pasta docker e rode com docker-compose up -d, pronto seu ambiente esta no localhost:8000
+- Recomento usar a branch main, pois a branch feat/pagination não está completa.
