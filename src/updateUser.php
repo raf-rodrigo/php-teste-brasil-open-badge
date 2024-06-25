@@ -44,7 +44,8 @@ if (isset($_POST)){
      * Verificando se a array $colors tem algum valor, caso tenha chama o método insertColor para inserir valores
      * na tabela user_colors, não não tiver não faz nada
      */
-    if (empty($_POST['colors']) || empty(array_filter($_POST['colors']))) {
+    if (empty($colors) || empty(array_filter($colors))) {
+
         header('Location: index.php');
         exit();
 

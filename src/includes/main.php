@@ -15,17 +15,13 @@ $start = ($page * $limit) - $limit;
 $crud = new CrudController();
 
 /**
- * Somante na tabela user
+ * Construção da paginação
  */
 //$numberRecords = $crud->countUsers();
 
 //$numberRecordsJoin = $crud->readUser($limit);
 
-
-
 //$limitResponse = $crud->allUser($limit);
-
-
 
 //$pageTotal = ceil($numberRecords / $limit);
 
@@ -97,7 +93,7 @@ $crud = new CrudController();
                                             </td>
                                             <td class="align-middle text-center">
                                                 <a href="readUser.php?id=<? echo $user['user_id']; ?>"><span title="Editar Registro"><img src="../public/assets/icon/edit.svg" width="30" /></span></a>
-                                                <a href="deleteUser.php?id=<? echo $user['user_id']; ?>"><span title="Excluir Registro"><img src="../public/assets/icon/trash.svg" width="30" /></span></a>
+                                                <a href="deleteUser.php?id=<? echo $user['user_id']; ?>" onclick="confirmDeletion(<? $user['user_id']; ?>)"><span title="Excluir Registro"><img src="../public/assets/icon/trash.svg" width="30" /></span></a>
                                             </td>
                                         </tr>
                                     <? endforeach; ?>
@@ -105,6 +101,7 @@ $crud = new CrudController();
                             </table>
                         </div>
                     </div>
+<!--    Paginação            -->
 <!--                <div>-->
 <!--                    --><?// if ($page > 1): ?>
 <!--                        <a href="index.php?page=1" type="button" class="btn btn-outline-primary mx-1">1</a>-->
@@ -120,4 +117,7 @@ $crud = new CrudController();
         <? endif; ?>
     </div>
 </section>
+
+
+
 
