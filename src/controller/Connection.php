@@ -57,6 +57,7 @@ class Connection {
 
     public function updateUser($id, $name, $email)
     {
+
         $query = "UPDATE users SET name = :name, email = :email WHERE id = :id";
 
         $statement = $this->getConnection()->prepare($query);

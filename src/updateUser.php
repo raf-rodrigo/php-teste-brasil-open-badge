@@ -13,7 +13,7 @@ if (isset($_POST)){
     /**
      * craindo a variável array colors com a recuperação através do post
      */
-    $colors = $_POST['colors'];
+    $colors = empty($_POST['colors']) ? [] : $_POST['colors'];
 
     /**
      * Instanciando a classe User e a classe CrudController
